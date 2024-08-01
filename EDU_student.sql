@@ -273,11 +273,16 @@ FROM   DUAL;
 --sql 語法課後練習
 
 select 
-customer_id, 
-name, 
-count(cust_id)
+CS.customer_id as "客戶編號", 
+CS.name as "客戶姓名", 
+sum(ODT.count) as "購買次數",
+sum(ODT.money) as "購買金額"
+
 from sql_customer_store CS
-inner join sql_order SO on CS.customer_id=SO.cust_id
-group by CS.customer_id, CS.name;
-   
+inner join sql_order OD on CS.customer_id=OD.cust_id
+inner join sql_order_detail ODT on OD.order_no= ODT.order_no
+inner join sql_item ST on ODT.item_no=ST.item_no
+where ST.item_name like '%巧克力%'
+group by CS.name, CS.customer_id   
+order by CS.customer_id;
    
