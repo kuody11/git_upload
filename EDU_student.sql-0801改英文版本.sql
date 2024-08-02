@@ -42,21 +42,21 @@ insert into EDU_student.LOCAT11 (VILL_ID, ADDRESS_ID, ADDRESS, PEOPLE, FLOOR, TY
  values ('C008', 'L12', '苗栗縣頭份市信義里中正路116號', '78', '1', '私營單位', 'M003');
 
 --新增轄管村里資訊內容
-insert into EDU_student.VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
+insert into VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
  values ('C001','大埔里','竹南鎮公義路1035號','037-581072');
-insert into EDU_student.VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
+insert into VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
  values ('C002','竹南里', '竹南鎮竹南里中山路103號', '037-472735');
-insert into EDU_student.VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
+insert into VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
  values ('C003','山佳里', '竹南鎮山佳里國光街14號', '037-614186');
-insert into EDU_student.VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
+insert into VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
  values ('C004', '埔頂里', '後龍鎮埔頂里中興路136-1號', '037-724839');
-insert into EDU_student.VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
+insert into VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
  values ('C005', '綠苗里', '苗栗市綠苗里中正路766號', '037-333240');
-insert into EDU_student.VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
+insert into VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
  values ('C006', '民族里', '民族里民族路96號', '037-660001');
-insert into EDU_student.VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
+insert into VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
  values ('C007', '忠孝里', '忠孝里光大街82號' ,'037-661145');
-insert into EDU_student.VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
+insert into VILLA11 (VILL_ID, VILL_NM, VILL_OFFICE, OFFICE_NUMBER)
 values ('C087', '信義里', '信義里信義路53巷1號', '037-616072');
 
 --新增轄管警察分局資訊內容
@@ -78,7 +78,7 @@ LOC.PEOPLE as 容人數量
 
 --4.2
 select POL.POLICE_NM as 管轄分局,
-POL.POLICE_NO as 分局連絡電話,
+ POL.POLICE_NO as 分局連絡電話,
  count(LOC.PEOPLE) as 容人數量
  from POLICE11 POL
  inner join LOCAT11 LOC on POL.POLICE_ID=LOC.POLICE_ID
@@ -91,30 +91,30 @@ select POL.POLICE_NM as 管轄分局,
  count(LOC.PEOPLE) as 容人數量,
  LOC.ADDRESS as 避難設施地址,
  LOC.TYPE as 類型
-from POLICE11 POL
-inner join LOCAT11 LOC on POL.POLICE_ID=LOC.POLICE_ID
-where PEOPLE>1000
-group by POL.POLICE_NM, POL.POLICE_NO, LOC.ADDRESS, LOC.TYPE;
+ from POLICE11 POL
+ inner join LOCAT11 LOC on POL.POLICE_ID=LOC.POLICE_ID
+ where PEOPLE>1000
+ group by POL.POLICE_NM, POL.POLICE_NO, LOC.ADDRESS, LOC.TYPE;
 
 --4.4
-select vil.vill_nm as 村里別,
-loc.address as 避難設施地址, 
-loc.people as 容人數量,
-pol.police_nm as 管轄分局,
-pol.police_no as 分局連絡電話
-from police11 pol
-inner join locat11 loc on pol.police_id=loc.police_ID
-inner join villa11 vil on loc.vill_id=vil.vill_id
-where loc.address like '%中%';
+select VIL.VILL_NM as 村里別,
+ LOC.ADDRESS as 避難設施地址, 
+ LOC.PEOPLE as 容人數量,
+ POL.POLICE_NM as 管轄分局,
+ POL.POLICE_NO as 分局連絡電話
+ from POLICE POL
+ inner join LOCAT11 LOC on POL.POLICE_ID=LOC.POLICE_ID
+ inner join VILLA11 VIL on LOC.VILL_ID=VILL.VILL_ID
+ where LOC.ADDRESS like '%中%';
 
 --4.5
-select vil.vill_nm as 村里別,
-vil.vill_office as 村里別辦公室,
-loc.address as 避難設施地址,
-loc.people as 容人數量
-from villa11 vil
-inner join locat11 loc on vil.vill_id=loc.vill_id
-where loc.type in ('公寓','大樓');
+select VIL.VILL_NM as 村里別,
+ VIL.VILL_OFFICE as 村里別辦公室,
+ LOC.ADDRESS as 避難設施地址,
+ LOC.PEOPLE as 容人數量
+ from VILLA11 VIL
+ inner join LOCAT11 LOC on VIL.VILL_ID=LOC.VILL_ID
+ where LOC.TYPE in ('公寓','大樓');
 
 --練習5 資料操控
 create table locatnew
@@ -122,35 +122,35 @@ create table locatnew
 容人數量 integer,地下樓層數 char(1),類別 nvarchar2(4),轄管分局代號 varchar2(4)
 );
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C001', 'L1','苗栗縣竹南鎮中埔街20號','100','1','公寓','M001');
+ values ('C001', 'L1','苗栗縣竹南鎮中埔街20號','100','1','公寓','M001');
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C002', 'L2','苗栗縣竹南鎮和平街79號','3142','1','大樓','M001');
+ values ('C002', 'L2','苗栗縣竹南鎮和平街79號','3142','1','大樓','M001');
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C003', 'L3','苗栗縣竹南鎮龍山路三段142號','1072','1','大樓','M001');
+ values ('C003', 'L3','苗栗縣竹南鎮龍山路三段142號','1072','1','大樓','M001');
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C004', 'L4','苗栗縣後龍鎮中華路1498號','32','1','公共設施','M001');
+ values ('C004', 'L4','苗栗縣後龍鎮中華路1498號','32','1','公共設施','M001');
 insert into locatnew("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C005', 'L5','苗栗縣苗栗市米市街80號','106','1','公寓','M002');
+ values ('C005', 'L5','苗栗縣苗栗市米市街80號','106','1','公寓','M002');
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C005', 'L6','苗栗縣苗栗市光復路117號','26','1','公寓','M002');
+ values ('C005', 'L6','苗栗縣苗栗市光復路117號','26','1','公寓','M002');
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C005', 'L7','苗栗縣苗栗市博愛街109號','2038','2','公寓','M002');
+ values ('C005', 'L7','苗栗縣苗栗市博愛街109號','2038','2','公寓','M002');
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C005', 'L8','苗栗縣苗栗市大同路53號','128','2','大樓','M002');
+ values ('C005', 'L8','苗栗縣苗栗市大同路53號','128','2','大樓','M002');
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C006', 'L9','苗栗縣頭份市民族里和平路102號','353','1','公共設施','M003');
+ values ('C006', 'L9','苗栗縣頭份市民族里和平路102號','353','1','公共設施','M003');
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C007', 'L10','苗栗縣頭份市忠孝忠孝一路69號','501','1','私營單位','M003');
+ values ('C007', 'L10','苗栗縣頭份市忠孝忠孝一路69號','501','1','私營單位','M003');
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C008', 'L11','苗栗縣頭份市信義里中正路65號','194','1','公寓','M003');
+ values ('C008', 'L11','苗栗縣頭份市信義里中正路65號','194','1','公寓','M003');
 insert into locatnew ("村里別代號","地址代號","地址設施","容人數量","地下樓層數","類別","轄管分局代號")
-values ('C008', 'L12','苗栗縣頭份市信義里中正路116號','78','1','私營單位','M003');
+ values ('C008', 'L12','苗栗縣頭份市信義里中正路116號','78','1','私營單位','M003');
 
 --5.1 
 update locatnew
-set 容人數量='5000'
-where 地址設施='苗栗縣竹南鎮和平街79號';
+ set 容人數量='5000'
+ where 地址設施='苗栗縣竹南鎮和平街79號';
 
 --5.2
 delete from locatnew
-where 容人數量<'1000';
+ where 容人數量<'1000';
