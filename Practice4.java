@@ -19,9 +19,7 @@ public class Practice4 {
 		for (Employee employee : employeeList) {
 			employee.IPrintInfo();
 		}
-
 		String filename = "output5.csv";
-
 		try (BufferedWriter writter = new BufferedWriter(new FileWriter(filename))) {
 			OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(filename), "UTF-8");
 			Sales a = null;

@@ -14,7 +14,6 @@ public class Practice2 {
 			result.add(rand.nextInt(49) + 1);
 		}
 		String ans = result.toString().replace("[", "").replace("]", "");
-//String results= result.toString()
 		System.out.println("排序前：" + ans);
 		Collections.sort(result);
 		String ans1 = result.toString().replace("[", "").replace("]", "");
