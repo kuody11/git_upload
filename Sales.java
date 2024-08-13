@@ -1,35 +1,52 @@
 package com.cathaybk.practice.nt50333.b;
 
 public class Sales extends Employee {
-	private int bouns;
+	
 	private int payment;
-
-	public Sales(String name, String department, int salary, int bouns) {
+	private int performance;
+	private int bonus;
+	public Sales(String name, String department, int salary, int performance) {
 		super(name, department, salary);
-		this.bouns = bouns;
+		this.bonus =(int) (performance*0.05);
+		this.payment=super.getSalary()+this.getBonus();
+		
 	}
 
-	public void IPrintInfo() {
-		System.out.println("姓名: " + super.getName() + " 工作部門: " + super.getDepartment());
-		System.out.println("月薪: " + super.getSalary());
-		System.out.println("業績獎金: " + this.getBouns());
-		System.out.println("總計: " + this.getPayment());
-	}
-
-	public int getBouns() {
-		return (int) (bouns * 0.05);
-	}
-
-	public void setBouns(int bouns) {
-		this.bouns = bouns;
+	@Override
+	public void printInfo() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("薪資單").append("\n");
+		sb.append("姓名: ").append(super.getName()).append(" ").append("工作部門: ").append(super.getDepartment())
+				.append("\n").append("月薪: ").append(super.getSalary()).append("\n").append("業績獎金: ")
+				.append(this.getBonus()).append("\n").append("總計: ").append(this.getPayment());
+		System.out.println(sb.toString());
 	}
 
 	public int getPayment() {
-		return payment = getBouns() + getSalary();
+		return payment;
 	}
 
 	public void setPayment(int payment) {
 		this.payment = payment;
 	}
+
+	public int getPerformance() {
+		return performance;
+	}
+
+	public void setPerformance(int performance) {
+		this.performance = performance;
+	}
+
+	public int getBonus() {
+		return bonus;
+	}
+
+	public void setBonus(int bonus) {
+		this.bonus = bonus;
+	}
+
+
+	
 
 }

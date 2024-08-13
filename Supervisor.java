@@ -6,17 +6,22 @@ public class Supervisor extends Employee {
 
 	public Supervisor(String name, String department, int salary) {
 		super(name, department, salary);
-		// TODO Auto-generated constructor stub
+		this.payment = super.getSalary();
 	}
 
-	public void IPrintInfo() {
-		System.out.println("姓名: " + super.getName() + " 工作部門: " + super.getDepartment());
-		System.out.println("月薪: " + super.getSalary());
-		System.out.println("總計: " + this.getPayment());
+	@Override
+	public void printInfo() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("薪資單").append("\n");
+		sb.append("姓名: ").append(super.getName()).append(" ").append("工作部門: ").append(super.getDepartment())
+				.append("\n").append("月薪: ").append(super.getSalary()).append("\n").append("總計: ")
+				.append(this.getPayment());
+		System.out.println(sb.toString());
+
 	}
 
 	public int getPayment() {
-		return payment = getSalary();
+		return payment;
 	}
 
 	public void setPayment(int payment) {

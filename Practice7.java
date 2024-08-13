@@ -19,9 +19,23 @@ public class Practice7 {
 
 	public static final String DELETE_CARS_SQL = "delete from STUDENT.CARS where MANUFACTURER = ? and TYPE= ?";
 
+	public static final String SELECT_CARS_SQL = "select * from STUDENT.CARS where MANUFACTURER = ? and TYPE = ?";
+
 	public static final String CONN_URL = "jdbc:oracle:thin:@//localhost:1521/XE";
 
-	public static void main(String[] args) {
+	public static final String CONN_COUNT = "student";
+
+	public static final String CONN_PASSWORD = "student123456";
+
+	private static final String TYPE = "TYPE";
+
+	private static final String MANUFACTURER = "MANUFACTURER";
+
+	private static final String MIN_PRICE = "MIN_PRICE";
+
+	private static final String PRICE = "PRICE";
+
+	public static void main(String[] args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("請選擇以下指令輸入: select、insert、update、delete\n");
 
@@ -63,7 +77,7 @@ public class Practice7 {
 			System.out.println("請輸入需要刪除資訊的類型:");
 			String deletype = scanner.next();
 			doDelete(delemanufacturer, deletype);
-			// 做delete方法
+
 		} else {
 			System.out.println("請輸入正確資訊");
 		}
@@ -73,10 +87,9 @@ public class Practice7 {
 	}
 
 	public static void doQuery(String manufacturer, String type) {
-		try (Connection conn = DriverManager.getConnection(CONN_URL, "student", "student123456");) {
+		try (Connection conn = DriverManager.getConnection(CONN_URL, CONN_COUNT, CONN_PASSWORD);) {
 
-			PreparedStatement pstmt = conn
-					.prepareStatement("select * from STUDENT.CARS where MANUFACTURER = ? and TYPE = ?");
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_CARS_SQL);
 			pstmt.setString(1, manufacturer);
 			pstmt.setString(2, type);
 
@@ -84,20 +97,19 @@ public class Practice7 {
 
 			List<Map<String, String>> list = new ArrayList<>();
 
-			;
 			while (rs.next()) {
 				Map<String, String> carmap = new HashMap<>();
-				carmap.put("MANUFACTURER", rs.getString("MANUFACTURER"));
-				carmap.put("TYPE", rs.getString("TYPE"));
-				carmap.put("MIN_PRICE", rs.getString("MIN_PRICE"));
-				carmap.put("PRICE", rs.getString("PRICE"));
+				carmap.put(MANUFACTURER, rs.getString(MANUFACTURER));
+				carmap.put(TYPE, rs.getString(TYPE));
+				carmap.put(MIN_PRICE, rs.getString(MIN_PRICE));
+				carmap.put(PRICE, rs.getString(PRICE));
 
 				list.add(carmap);
 				StringBuilder sb = new StringBuilder();
 
-				sb.append("製造商: ").append(carmap.get("MANUFACTURER")).append("\n").append("型號: ")
-						.append(carmap.get("TYPE")).append("\n").append("售價:$ ").append(carmap.get("PRICE"))
-						.append("\n").append("底價:$ ").append(carmap.get("MIN_PRICE"));
+				sb.append("製造商: ").append(carmap.get(MANUFACTURER)).append("\n").append("型號: ").append(carmap.get(TYPE))
+						.append("\n").append("售價:$ ").append(carmap.get(PRICE)).append("\n").append("底價:$ ")
+						.append(carmap.get(MIN_PRICE));
 				System.out.println(sb.toString());
 			}
 		} catch (SQLException e) {
@@ -107,7 +119,7 @@ public class Practice7 {
 	}
 
 	public static void doInsert(String addmanufacturer, String addtype, BigDecimal addmin_price, BigDecimal addprice) {
-		try (Connection conn = DriverManager.getConnection(CONN_URL, "student", "student123456");) {
+		try (Connection conn = DriverManager.getConnection(CONN_URL, CONN_COUNT, CONN_PASSWORD);) {
 			try {
 
 				conn.setAutoCommit(false);
@@ -132,13 +144,15 @@ public class Practice7 {
 
 			}
 		} catch (Exception e) {
+			System.out.println("連線失敗，原因: " + e.getMessage());
 
 		}
 
 	}
 
-	public static void doUpdate(BigDecimal udmin_price, BigDecimal udprice, String udmanufacturer, String udtype) {
-		try (Connection conn = DriverManager.getConnection(CONN_URL, "student", "student123456");) {
+	public static void doUpdate(BigDecimal udmin_price, BigDecimal udprice, String udmanufacturer, String udtype)
+			throws Exception {
+		try (Connection conn = DriverManager.getConnection(CONN_URL, CONN_COUNT, CONN_PASSWORD);) {
 			try {
 				conn.setAutoCommit(false);
 				PreparedStatement pstmt = conn.prepareStatement(UPDATE_CARS_SQL);
@@ -162,13 +176,13 @@ public class Practice7 {
 
 			}
 
-		} catch (Exception e) {
-
 		}
+		throw new Exception();
+
 	}
 
 	public static void doDelete(String delemanufacturer, String deletype) {
-		try (Connection conn = DriverManager.getConnection(CONN_URL, "student", "student123456");) {
+		try (Connection conn = DriverManager.getConnection(CONN_URL, CONN_COUNT, CONN_PASSWORD);) {
 			try {
 				conn.setAutoCommit(false);
 				PreparedStatement pstmt = conn.prepareStatement(DELETE_CARS_SQL);
@@ -191,6 +205,7 @@ public class Practice7 {
 
 			}
 		} catch (Exception e) {
+			System.out.println("連線失敗，原因: " + e.getMessage());
 
 		}
 	}

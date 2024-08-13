@@ -5,8 +5,8 @@ public abstract class Employee implements IWork {
 	private String department;
 	private int salary;
 
-	public void IPrintInfo() {
-		System.out.println("姓名: " + name + "工作部門: " + department + "月薪: " + salary);
+	@Override
+	public void printInfo() {
 	}
 
 	public Employee(String name, String department, int salary) {

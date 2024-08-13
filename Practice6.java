@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,8 +18,10 @@ import java.util.StringJoiner;
 
 public class Practice6 {
 	public static void main(String[] args) {
-		String inputFileName = "C:\\\\Users\\\\Admin\\\\Desktop\\\\Java評量_第6題cars.csv";
-		String outputFileName = "C:\\\\Users\\\\Admin\\\\Desktop\\\\cars4.csv";
+
+		String userHome = System.getProperty("user.home");
+		String inputFileName = Paths.get(userHome, "Desktop", "Java評量_第6題cars.csv").toString();
+		String outputFileName = Paths.get(userHome, "Desktop", "cars6.csv").toString();
 
 		List<Map<String, String>> dataList = new ArrayList<>();
 
@@ -34,20 +38,55 @@ public class Practice6 {
 				}
 				dataList.add(dataMap);
 
-				Collections.sort(dataList, new Comparator<Map<String, String>>() {
-					@Override
-					public int compare(Map<String, String> car1, Map<String, String> car2) {
-						{
-							double price1 = Double.parseDouble(car1.get("Price"));
-							double price2 = Double.parseDouble(car2.get("Price"));
-							return Double.compare(price2, price1);
-						}
-
+			}
+			Collections.sort(dataList, new Comparator<Map<String, String>>() {
+				@Override
+				public int compare(Map<String, String> car1, Map<String, String> car2) {
+					{
+						double price1 = Double.parseDouble(car1.get("Price"));
+						double price2 = Double.parseDouble(car2.get("Price"));
+						return Double.compare(price2, price1);
 					}
 
-				});
+				}
+
+			});
+			Map<String, List<Map<String, String>>> groupedData = new HashMap<>();
+
+			System.out.printf("%-15s %s %15s %10s\n", "Manufacturer", "TYPE", "Min.PRICE", "Price");
+
+			for (Map<String, String> data : dataList) {
+				String manufacturer = data.get("Manufacturer");
+				groupedData.computeIfAbsent(manufacturer, k -> new ArrayList<>()).add(data);
 
 			}
+
+			BigDecimal grandTotalMinPrice = BigDecimal.ZERO;
+			BigDecimal grandTotalPrice = BigDecimal.ZERO;
+
+			for (String manufacturer : groupedData.keySet()) {
+				List<Map<String, String>> group = groupedData.get(manufacturer);
+
+				BigDecimal minPriceSum = BigDecimal.ZERO;
+				BigDecimal priceSum = BigDecimal.ZERO;
+
+				for (Map<String, String> valuedata : group) {
+					BigDecimal minPrice = new BigDecimal(valuedata.get("Min.Price"));
+					BigDecimal price = new BigDecimal(valuedata.get("Price"));
+
+					minPriceSum = minPriceSum.add(minPrice);
+					priceSum = priceSum.add(price);
+
+					System.out.printf("%-15s %-10s %9.1f %10.1f\n", valuedata.get("Manufacturer"),
+							valuedata.get("Type"), minPrice, price);
+				}
+				System.out.printf("小計:\t\t\t%12.1f\t%7.1f\n", minPriceSum, priceSum);
+
+				grandTotalMinPrice = grandTotalMinPrice.add(minPriceSum);
+				grandTotalPrice = grandTotalPrice.add(priceSum);
+
+			}
+			System.out.printf("合計:\t\t\t%12.1f\t%7.1f", grandTotalMinPrice, grandTotalPrice);
 
 			try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputFileName))) {
 				bw.write(headerLine);
