@@ -129,10 +129,15 @@ public class Practice7 {
 				pstmt.setString(2, addtype);
 				pstmt.setBigDecimal(3, addmin_price);
 				pstmt.setBigDecimal(4, addprice);
-				pstmt.executeUpdate();
 
-				conn.commit();
-				System.out.println("資料已新增成功");
+				int insertdate = pstmt.executeUpdate();
+				if (insertdate == 0) {
+					System.out.println("資料新增失敗");
+				} else {
+
+					conn.commit();
+					System.out.println("資料已新增成功");
+				}
 			} catch (Exception e) {
 				System.out.println("新增失敗，原因：" + e.getMessage());
 				try {
@@ -161,10 +166,16 @@ public class Practice7 {
 				pstmt.setBigDecimal(2, udprice);
 				pstmt.setString(3, udmanufacturer);
 				pstmt.setString(4, udtype);
-				pstmt.executeUpdate();
 
-				conn.commit();
-				System.out.println("資訊已更新成功");
+				int updatedata = pstmt.executeUpdate();
+				if (updatedata == 0) {
+					System.out.println("資料更新失敗");
+				} else {
+
+					conn.commit();
+					System.out.println("資訊已更新成功");
+				}
+
 			} catch (Exception e) {
 				System.out.println("資料更新失敗，原因:" + e.getMessage());
 				try {
@@ -189,10 +200,15 @@ public class Practice7 {
 
 				pstmt.setString(1, delemanufacturer);
 				pstmt.setString(2, deletype);
-				pstmt.executeUpdate();
+				int updatedata = pstmt.executeUpdate();
+				if (updatedata == 0) {
+					System.out.println("資料刪除失敗");
+				} else {
 
-				conn.commit();
-				System.out.println("資料已經刪除成功");
+					conn.commit();
+					System.out.println("資訊已刪除成功");
+				}
+
 			} catch (Exception e) {
 				System.out.println("資料刪除失敗，失敗原因: " + e.getMessage());
 

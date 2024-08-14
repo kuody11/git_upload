@@ -1,15 +1,16 @@
 package com.cathaybk.practice.nt50333.b;
 
 public class Sales extends Employee {
-	
+
 	private int payment;
 	private int performance;
 	private int bonus;
+
 	public Sales(String name, String department, int salary, int performance) {
 		super(name, department, salary);
-		this.bonus =(int) (performance*0.05);
-		this.payment=super.getSalary()+this.getBonus();
-		
+		this.bonus = (int) (performance * 0.05);
+		this.payment = super.getSalary() + this.getBonus();
+
 	}
 
 	@Override
@@ -45,8 +46,5 @@ public class Sales extends Employee {
 	public void setBonus(int bonus) {
 		this.bonus = bonus;
 	}
-
-
-	
 
 }
