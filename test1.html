@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="testHashMap.js"></script>
+	
+    <style>
+        .tableForm{
+            width: 300px;
+            height: 70px;
+            border-top-style: solid;
+            border-left-style: none;
+            border-right-style: none;
+            border-bottom-style: solid;
+            border-collapse:collapse;
+            text-align: left;
+        }
+       
+    </style>
+</head>
+<body>
+
+    <form>
+        <div>
+        <table width="100px" height="100px">
+            <tr>
+                <td>KEY</td>
+                <td><input type="text" id="textKey"></td>
+            </tr>
+            <tr>
+                <td>VALUE</td>
+                <td><input type="text" id="textValue"></td>
+            </tr>
+        
+
+
+        </table>
+        
+        </div> 
+         <div>
+        <table  class="tableForm">
+            <tr>
+                <td><button type="button" id="putbutton">PUT</button></td>
+                <td><button type="reset" id="clearbutton">CLEAR</button></td>
+                <td></td>
+               
+        
+        
+            </tr>
+        </table>
+        </div>
+    <p id="ans">【RESULT】</p><br>
+    </form>
+
+    
+    <script type ="text/javaScript">	
+    const map = new HashMap(); 
+    window.onload = function(){
+        
+        document.getElementById("putbutton").onclick = function(){
+            
+            const textKey = document.getElementById("textKey").value;
+            const textValue = document.getElementById("textValue").value;
+            if(textKey){//打0進去應該要抱錯
+                if(!map.contains(textKey)){
+                    map.put(textKey, textValue);
+                    answer();
+
+                }else{
+                    alert("您輸入的key: " + textKey + "已經存在，請重新輸入");
+                }
+                
+
+            }else{
+                alert("請輸入key值");
+            }       
+        
+        };
+
+        document.getElementById("clearbutton").onclick = function () {
+            map.clear();
+            document.getElementById("ans").innerHTML="【RESULT】";
+            
+        }
+        function answer() {
+            const resultAns = document.getElementById("ans");
+            resultAns.innerHTML = "【RESULT】<br>";
+            const key =map.keys();
+            for(let i=0; i<key.length; i++){
+            resultAns.innerHTML += "　　"+key[i]+":"+map.get(key[i])+"<br>";
+            
+        }
+        
+    };
+};
+	
+	</script>
+
+</body>
+</html>
