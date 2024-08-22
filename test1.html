@@ -60,7 +60,7 @@
             
             const textKey = document.getElementById("textKey").value;
             const textValue = document.getElementById("textValue").value;
-            if(textKey){//打0進去應該要抱錯
+            if(textKey){
                 if(!map.contains(textKey)){
                     map.put(textKey, textValue);
                     answer();
