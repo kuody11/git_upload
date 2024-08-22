@@ -1,40 +1,136 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script>
+        let selectedRow = null;
+        let serNumber = 1;
+        window.onload = function () {
+            document.getElementById("insertButton").onclick = function () {
+                const inManu = document.getElementById("inManu").value.trim();
+                const inType = document.getElementById("inType").value.trim();
+                const inMinprice = document.getElementById("inMinprice").value.trim();
+                const inPrice = document.getElementById("inPrice").value.trim();
+                if (!inManu || !inType) {
+                    alert("製造商以及類別不可空白，請重新輸入");
+                    return;
+                }
+                answer(inManu, inType, inMinprice, inPrice);
+                function answer(manu, type, minprice, price) {
+                    const newTable = document.getElementById("newTable");
+                    const newRow = document.createElement('tr');
+                    const radioTd = document.createElement('td');
+                    const radioButton = document.createElement('input');
+                    const numberTd = document.createElement('td');
+                    const manuTd = document.createElement('td');
+                    const typeTd = document.createElement('td');
+                    const minTd = document.createElement('td');
+                    const priceTd = document.createElement('td');
+                    const deleTd = document.createElement('td');
+                    const deleButton = document.createElement('input');
+                    radioButton.type = "radio";
+                    radioButton.name = "selectRow";
+                    radioButton.onclick = function () {
+                        selectedRow = newRow;
+                        document.getElementById("inManu").value = manu;
+                        document.getElementById("inType").value = type;
+                        document.getElementById("inMinprice").value = minprice;
+                        document.getElementById("inPrice").value = price;
+                    };
+                    radioTd.appendChild(radioButton);
+                    numberTd.innerHTML = serNumber;
+                    serNumber++;
+                    manuTd.innerHTML = manu;
+                    typeTd.innerHTML = type;
+                    minTd.innerHTML = minprice;
+                    priceTd.innerHTML = price;
+                    deleButton.type = "button";
+                    deleButton.value = "刪除";
+                    deleButton.id = "delButton";
+                    deleButton.onclick = function () {
+                        selectedRow = newRow;
+                        document.getElementById("newTable").deleteRow(selectedRow.rowIndex);
+                        updateSerNumber();
+                    };
+                    deleTd.appendChild(deleButton);
+                    newRow.appendChild(radioTd);
+                    newRow.appendChild(numberTd);
+                    newRow.appendChild(manuTd);
+                    newRow.appendChild(typeTd);
+                    newRow.appendChild(minTd);
+                    newRow.appendChild(priceTd);
+                    newRow.appendChild(deleTd);
+                    newTable.appendChild(newRow);
+                }
+            };
+            document.getElementById("clearbutton").onclick = function () {
+                const table = document.getElementById("newTable");
+                const rows = table.rows.length;
+                for (let i = rows - 1; i > 0; i--) {
+                    table.deleteRow(i);
+                }
+                updateSerNumber();
+            };
+            document.getElementById("updateButton").onclick = function () {
+                if (!selectedRow) {
+                    alert("請先選擇要修改的欄位，才能進行更新");
+                    return;
+                }
+                const updateManu = document.getElementById("inManu").value.trim();
+                const updateType = document.getElementById("inType").value.trim();
+                const updateMinprice = document.getElementById("inMinprice").value.trim();
+                const updatePrice = document.getElementById("inPrice").value.trim();
+                if (!updateManu || !updateType) {
+                    alert("製造商以及類別不可空白，請重新輸入");
+                    return;
+                }
+                selectedRow.cells[2].innerHTML = updateManu;
+                selectedRow.cells[3].innerHTML = updateType;
+                selectedRow.cells[4].innerHTML = updateMinprice;
+                selectedRow.cells[5].innerHTML = updatePrice;
+            };
+        }
+        function updateSerNumber() {
+            const table = document.getElementById("newTable");
+            const rows = table.rows.length;
+            serNumber = 1;
+            for (let i = 1; i < rows; i++) {
+                table.rows[i].cells[1].innerHTML = serNumber;
+                serNumber++;
+            }
+        }
+    </script>
     <style>
-        .button{
+        .button {
             text-align: center;
             width: 300px;
             height: 70px;
         }
-
-        #tableStyle{
-            border:#000000 solid 1px;
-            border-collapse:collapse;
+        #tableStyle {
+            border: #000000 solid 1px;
+            border-collapse: collapse;
         }
-
-        .tdForm{
+        .tdForm {
             width: 70px;
             height: 20px;
         }
-        .textForm{
+        .textForm {
             height: 20px;
             size: "10";
         }
-        .tdForm1{
+        .tdForm1 {
             width: 200px;
             height: 20px;
         }
-        .tableStyle1{
+        .tableStyle1 {
             width: 500px;
             height: 50px;
-            border:#000000 solid 1px;
-            border-collapse:collapse;
+            border: #000000 solid 1px;
+            border-collapse: collapse;
             text-align: center;
         }
     </style>
 </head>
-<body>  
+<body>
     <form>
         <div>
             <table id="tableStyle" border="1">
@@ -60,7 +156,6 @@
             </table>
         </div>
         <br>
-        
         <div>
             <table class="tableStyle1" border="1" id="newTable">
                 <tr>
@@ -75,147 +170,5 @@
             </table>
         </div>
     </form>
-
-    <script>
-        let selectedRow = null;
-        let serNumber = 1;
-        window.onload = function() {
-            
-            document.getElementById("insertButton").onclick = function() {
-                const inManu = document.getElementById("inManu").value.trim();
-                const inType = document.getElementById("inType").value.trim();
-                const inMinprice = document.getElementById("inMinprice").value.trim();
-                const inPrice = document.getElementById("inPrice").value.trim();
-
-                if(!inManu || !inType) {
-                    alert("製造商以及類別不可空白，請重新輸入");
-                } else {
-                    answer(inManu, inType, inMinprice, inPrice);
-                }
-                
-
-                function answer(manu, type, minprice, price) {
-                    const newTable = document.getElementById("newTable");
-
-                    const newRow = document.createElement('tr');
-                    const radioTd = document.createElement('td');
-                    const radioButton = document.createElement('input');
-                    radioButton.type = "radio";
-                    radioButton.name = "selectRow";
-                    
-                    radioButton.onclick = function() {
-                        selectedRow = newRow;
-                            document.getElementById("inManu").value = manu;
-                            document.getElementById("inType").value = type;
-                            document.getElementById("inMinprice").value = minprice;
-                            document.getElementById("inPrice").value = price;
-                            
-                            };
-        
-                    radioTd.appendChild(radioButton);
-
-                    const numberTd = document.createElement('td');
-                    
-                    numberTd.innerHTML = serNumber;
-                    serNumber++;
-
-                    const manuTd = document.createElement('td');
-                    manuTd.innerHTML = manu;
-                    const typeTd = document.createElement('td');
-                    typeTd.innerHTML = type;
-                    const minTd = document.createElement('td');
-                    minTd.innerHTML = minprice;
-                    const priceTd = document.createElement('td');
-                    priceTd.innerHTML = price;
-
-                    const deleTd = document.createElement('td');
-                    const deleButton = document.createElement('input');
-                    deleButton.type = "button";
-                    deleButton.value = "刪除";
-                    deleButton.id = "delButton";
-
-                  
-                    deleButton.onclick = function() {
-                        selectedRow = newRow;
-                        
-                        document.getElementById("newTable").deleteRow(selectedRow.rowIndex);
-
-                      
-                        updateSerNumber();
-                    };
-                    deleTd.appendChild(deleButton);
-
-                    newRow.appendChild(radioTd);
-                    newRow.appendChild(numberTd);
-                    newRow.appendChild(manuTd);
-                    newRow.appendChild(typeTd);
-                    newRow.appendChild(minTd);
-                    newRow.appendChild(priceTd);
-                    newRow.appendChild(deleTd);
-
-                    newTable.appendChild(newRow);
-                    
-
-
-                    
-                }
-                
-
-                
-            };
-          
-
-            
-        
-
-
-
-            
-            document.getElementById("clearbutton").onclick = function() {
-                const table = document.getElementById("newTable");
-                const rows = table.rows.length;
-                for (let i = rows - 1; i > 0; i--) {
-                    table.deleteRow(i);
-                }
-                updateSerNumber();
-            };  
-           
-            document.getElementById("updateButton").onclick = function(){
-                if(selectedRow){
-                    const updateManu = document.getElementById("inManu").value.trim();
-                    const updateType = document.getElementById("inType").value.trim();
-                    const updateMinprice = document.getElementById("inMinprice").value.trim();
-                    const updatePrice = document.getElementById("inPrice").value.trim();
-                    if(!updateManu || !updateType){
-                        alert("製造商以及類別不可空白，請重新輸入");
-                    }else{
-                        selectedRow.cells[2].innerHTML = updateManu;
-                        selectedRow.cells[3].innerHTML = updateType;
-                        selectedRow.cells[4].innerHTML = updateMinprice;
-                        selectedRow.cells[5].innerHTML = updatePrice;
-                       
-                    }
-
-                    
-                 }else{
-                    alert("請先選擇要修改的欄位，才能進行更新")
-                 }
-
-            }
-
-        };
-
-        function updateSerNumber() {
-                const table = document.getElementById("newTable");
-                const rows = table.rows.length;
-                serNumber = 1; 
-
-                for (let i = 1; i < rows; i++) {
-                    table.rows[i].cells[1].innerHTML = serNumber;
-                    serNumber++;
-                }
-            }
-
-    </script>
 </body>
 </html>

@@ -1,99 +1,76 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<script type="text/javascript" src="testHashMap.js"></script>
-	
+    <script type="text/javascript" src="testHashMap.js"></script>
+    <script>
+        const map = new HashMap();
+        window.onload = function () {
+            document.getElementById("putbutton").onclick = function () {
+                const textKey = document.getElementById("textKey").value.trim();
+                const textValue = document.getElementById("textValue").value.trim();
+                if (!textKey) {
+                    alert("KEY輸入格不能為空白");
+                    return;
+                }
+                if (map.contains(textKey)) {
+                    alert("KEY值不能重複");
+                    return;
+                }
+                map.put(textKey, textValue);
+                answer();
+            };
+            document.getElementById("clearbutton").onclick = function () {
+                map.clear();
+                document.getElementById("ans").innerHTML = "【RESULT】";
+            }
+            function answer() {
+                const resultAns = document.getElementById("ans");
+                resultAns.innerHTML = "【RESULT】<br>";
+                const key = map.keys();
+                for (let i = 0; i < key.length; i++) {
+                    resultAns.innerHTML += "　　" + key[i] + ":" + map.get(key[i]) + "<br>";
+                }
+            };
+        };
+    </script>
     <style>
-        .tableForm{
+        .tableForm {
             width: 300px;
             height: 70px;
             border-top-style: solid;
             border-left-style: none;
             border-right-style: none;
             border-bottom-style: solid;
-            border-collapse:collapse;
+            border-collapse: collapse;
             text-align: left;
         }
-       
     </style>
 </head>
 <body>
-
     <form>
         <div>
-        <table width="100px" height="100px">
-            <tr>
-                <td>KEY</td>
-                <td><input type="text" id="textKey"></td>
-            </tr>
-            <tr>
-                <td>VALUE</td>
-                <td><input type="text" id="textValue"></td>
-            </tr>
-        
-
-
-        </table>
-        
-        </div> 
-         <div>
-        <table  class="tableForm">
-            <tr>
-                <td><button type="button" id="putbutton">PUT</button></td>
-                <td><button type="reset" id="clearbutton">CLEAR</button></td>
-                <td></td>
-               
-        
-        
-            </tr>
-        </table>
+            <table width="100px" height="100px">
+                <tr>
+                    <td>KEY</td>
+                    <td><input type="text" id="textKey"  onkeyup="this.value=this.value.replace(/[, ]/g,'')"></td>
+                </tr>
+                <tr>
+                    <td>VALUE</td>
+                    <td><input type="text" id="textValue" onkeyup="this.value=this.value.replace(/[, ]/g,'')"></td>
+                </tr>
+            </table>
         </div>
-    <p id="ans">【RESULT】</p><br>
+        <div>
+            <table class="tableForm">
+                <tr>
+                    <td><button type="button" id="putbutton">PUT</button></td>
+                    <td><button type="reset" id="clearbutton">CLEAR</button></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <p id="ans">【RESULT】</p><br>
     </form>
-
-    
-    <script type ="text/javaScript">	
-    const map = new HashMap(); 
-    window.onload = function(){
-        
-        document.getElementById("putbutton").onclick = function(){
-            
-            const textKey = document.getElementById("textKey").value;
-            const textValue = document.getElementById("textValue").value;
-            if(textKey && !isNaN(textKey) && textKey !== "0" ){
-                if(!map.contains(textKey)){
-                    map.put(textKey, textValue);
-                    answer();
-
-                }else{
-                    alert("您輸入的key: " + textKey + "已經存在，請重新輸入");
-                }
-                
-
-            }else{
-                alert("請輸入key值");
-            }       
-        
-        };
-
-        document.getElementById("clearbutton").onclick = function () {
-            map.clear();
-            document.getElementById("ans").innerHTML="【RESULT】";
-            
-        }
-        function answer() {
-            const resultAns = document.getElementById("ans");
-            resultAns.innerHTML = "【RESULT】<br>";
-            const key =map.keys();
-            for(let i=0; i<key.length; i++){
-            resultAns.innerHTML += "　　"+key[i]+":"+map.get(key[i])+"<br>";
-            
-        }
-        
-    };
-};
-	
-	</script>
-
 </body>
 </html>
