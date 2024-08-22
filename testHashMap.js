@@ -6,13 +6,10 @@ var HashMap = function () {
             obj[k] = v;
         },
         keys: function () {
-            const keys = Object.keys(obj);
-            return keys;
+            return Object.keys(obj);
         },
         contains: function (key) {
-            if (key in obj) {
-                return true;
-            }
+            return key in obj;
         },
         get: function (key) {
             return obj[key];
