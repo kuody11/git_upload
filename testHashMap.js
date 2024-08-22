@@ -16,7 +16,6 @@ var HashMap = function () {
         },
         get: function (key) {
             return obj[key];
-
         },
         clear: function () {
             obj = {};
