@@ -60,7 +60,7 @@
             
             const textKey = document.getElementById("textKey").value;
             const textValue = document.getElementById("textValue").value;
-            if(textKey){
+            if(textKey && !isNaN(textKey) && textKey !== "0" ){
                 if(!map.contains(textKey)){
                     map.put(textKey, textValue);
                     answer();
